@@ -1,12 +1,39 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import EmployeeDashboard from "./pages/EmployeeDashboard";
+import AdminDashboard from "./pages/AdminDashboard";
+import ProtectedRoute from "./components/common/ProtectedRoute";
 
 function App() {
-
   return (
-    <>
-      <div>
-        <h1 class="text-3xl font-bold underline">Hello world!</h1>
-      </div>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+
+        <Route
+          path="/employee"
+          element={
+            <ProtectedRoute allowedRole="employee">
+              <EmployeeDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute allowedRole="admin">
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Optional default redirect */}
+        <Route path="*" element={<LoginPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

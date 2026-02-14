@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 
 const generateAccessToken = (user) =>
   jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, {
-    expiresIn: "15m",
+    expiresIn: "1d",
   });
 
 const generateRefreshToken = (user) =>
@@ -65,10 +65,19 @@ exports.login = async (req, res) => {
   user.refreshToken = refreshToken;
   await user.save();
 
-  res.cookie("accessToken", accessToken, { httpOnly: true });
-  res.cookie("refreshToken", refreshToken, { httpOnly: true });
+  res.cookie("accessToken", accessToken, {
+    httpOnly: true,
+    secure: false,
+    sameSite: "lax",
+  });
 
-  res.json({ message: "Login success" });
+  res.cookie("refreshToken", refreshToken, {
+    httpOnly: true,
+    secure: false,
+    sameSite: "lax",
+  });
+
+  res.json({ message: "Login success", accessToken, refreshToken, user });
 };
 
 exports.refresh = async (req, res) => {
@@ -77,7 +86,8 @@ exports.refresh = async (req, res) => {
 
   const decoded = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
 
-  const user = await User.findById(decoded.id);``
+  const user = await User.findById(decoded.id);
+  ``;
 
   if (!user || user.refreshToken !== token)
     return res.status(403).json({ message: "Invalid refresh token" });
