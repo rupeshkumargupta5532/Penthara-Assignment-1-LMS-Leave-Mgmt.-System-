@@ -1,11 +1,20 @@
 import { useState } from "react";
 import { filterLeaves } from "../../services/adminService";
 import Button from "../common/Button";
+import Loader from "../common/Loader";
 
 /**
  * LeaveFilter Component
- * Allows admin to filter leaves by status and department
+ *
+ * Allows admin to filter leave requests by:
+ * - Status
+ * - Department
+ *
+ * Returns filtered results to parent component.
+ *
+ * @param {Function} onResults - Callback to pass filtered leave data
  */
+
 const LeaveFilter = ({ onResults }) => {
   const [filters, setFilters] = useState({
     status: "",
@@ -28,8 +37,6 @@ const LeaveFilter = ({ onResults }) => {
     try {
       setLoading(true);
       const response = await filterLeaves(filters.status, filters.department);
-      console.log("res sss", response);
-      // Pass results to parent component
       onResults(response?.data?.data);
     } catch (error) {
       console.error("Error filtering leaves:", error);
@@ -44,7 +51,7 @@ const LeaveFilter = ({ onResults }) => {
    */
   const handleReset = () => {
     setFilters({ status: "", department: "" });
-    onResults([]); // clear table
+    onResults([]);
   };
 
   return (
@@ -78,7 +85,7 @@ const LeaveFilter = ({ onResults }) => {
         {/* Buttons */}
         <div className="flex gap-2">
           <Button onClick={handleFilter} variant="primary">
-            {loading ? "Filtering..." : "Apply"}
+            {loading ? <Loader /> : "Apply"}
           </Button>
 
           <Button onClick={handleReset} variant="danger">

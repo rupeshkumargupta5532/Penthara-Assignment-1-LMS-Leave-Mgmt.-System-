@@ -5,9 +5,18 @@ import Button from "../common/Button";
 import { formatDate } from "../../utils/formatDate";
 
 /**
- * Leave Application Form
- * Includes date validation (fromDate < toDate)
+ * LeaveForm Component
+ *
+ * Provides form for employees to apply for leave.
+ *
+ * Handles:
+ * - Leave type selection
+ * - Date selection (from & to)
+ * - Reason input
+ * - Client-side validation
+ * - API submission
  */
+
 const LeaveForm = () => {
   const [formData, setFormData] = useState({
     leaveType: "",

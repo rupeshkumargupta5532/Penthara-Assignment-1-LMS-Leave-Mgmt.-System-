@@ -1,7 +1,17 @@
 /**
  * LeaveBalance Component
- * Displays employee leave summary cards
+ *
+ * Displays leave summary statistics.
+ *
+ * Shows:
+ * - Total leaves
+ * - Approved leaves
+ * - Pending leaves
+ * - Rejected leaves
+ *
+ * @param {Object} summary - Leave statistics object
  */
+
 const LeaveBalance = ({ summary }) => {
   const {
     totalLeaves = 0,

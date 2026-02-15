@@ -5,8 +5,25 @@ import Button from "../common/Button";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 /**
- * Employee Registration Form
+ * RegisterForm Component
+ *
+ * Handles employee registration.
+ *
+ * Responsibilities:
+ * - Collect user registration details
+ * - Submit registration data to backend
+ * - Redirect user to login after successful registration
+ *
+ * Fields:
+ * - Name
+ * - Email
+ * - Password
+ * - Employee ID
+ * - Department
+ *
+ * Uses reusable InputField and Button components.
  */
+
 const RegisterForm = () => {
   const navigate = useNavigate();
 

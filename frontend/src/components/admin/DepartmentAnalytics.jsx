@@ -1,10 +1,21 @@
+
+
 import { useEffect, useState } from "react";
 import { getDepartmentAnalytics } from "../../services/adminService";
+import DataTable from "../common/DataTable";
 
 /**
- * Department Leave Analytics
- * Displays leave statistics grouped by department
+ * DepartmentAnalytics Component
+ *
+ * Displays department-wise leave statistics.
+ *
+ * Shows:
+ * - Approved leaves
+ * - Pending leaves
+ * - Rejected leaves
+ * - Total leaves per department
  */
+
 const DepartmentAnalytics = () => {
   const [analytics, setAnalytics] = useState([]);
 
@@ -21,51 +32,21 @@ const DepartmentAnalytics = () => {
     }
   };
 
+  const columns = [
+    { header: "Department", accessor: "_id" },
+    { header: "Approved", accessor: "approved" },
+    { header: "Pending", accessor: "pending" },
+    { header: "Rejected", accessor: "rejected" },
+    { header: "Total Leaves", accessor: "totalLeaves" },
+  ];
+
   return (
-    <div className="mt-6 bg-white shadow rounded-lg p-6">
-      <h2 className="text-xl font-bold mb-4">Department Leave Analytics</h2>
-
-      <div className="overflow-x-auto">
-        <table className="w-full border border-gray-200">
-          {/* Table Headings */}
-          <thead className="bg-gray-100">
-            <tr className="text-left">
-              <th className="p-3 border">Department</th>
-              <th className="p-3 border">Approved</th>
-              <th className="p-3 border">Pending</th>
-              <th className="p-3 border">Rejected</th>
-              <th className="p-3 border">Total Leaves</th>
-            </tr>
-          </thead>
-
-          {/* Table Body */}
-          <tbody>
-            {analytics.map((item) => (
-              <tr
-                key={item._id}
-                className="border-t hover:bg-gray-50 transition"
-              >
-                <td className="p-3 border font-medium">{item._id}</td>
-
-                <td className="p-3 border text-green-600 font-semibold">
-                  {item.approved}
-                </td>
-
-                <td className="p-3 border text-yellow-600 font-semibold">
-                  {item.pending}
-                </td>
-
-                <td className="p-3 border text-red-600 font-semibold">
-                  {item.rejected}
-                </td>
-
-                <td className="p-3 border font-bold">{item.totalLeaves}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <DataTable
+      title="Department Leave Analytics"
+      columns={columns}
+      data={analytics}
+      emptyMessage="No department analytics available"
+    />
   );
 };
 

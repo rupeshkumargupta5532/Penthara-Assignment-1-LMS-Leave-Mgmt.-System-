@@ -5,8 +5,22 @@ import LeaveBalance from "../components/leave/LeaveBalance";
 import { statsUser } from "../services/leaveService";
 
 /**
- * Employee Dashboard
+ * EmployeeDashboard Component
+ *
+ * Main dashboard for employee users.
+ *
+ * Responsibilities:
+ * - Fetch employee leave statistics
+ * - Display leave balance summary
+ * - Render leave application form
+ * - Render leave history table
+ *
+ * Uses:
+ * - LeaveForm
+ * - LeaveBalance
+ * - LeaveTable
  */
+
 const EmployeeDashboard = () => {
   const [summary, setSummary] = useState();
 

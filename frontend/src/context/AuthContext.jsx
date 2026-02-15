@@ -4,7 +4,14 @@ import { getCurrentUser } from "../services/authService";
 const AuthContext = createContext();
 
 /**
- * Provides authentication state globally
+ * AuthProvider Component
+ *
+ * Provides global authentication state.
+ *
+ * Handles:
+ * - User session storage
+ * - Session restoration on refresh
+ * - Authentication context distribution
  */
 
 export const AuthProvider = ({ children }) => {

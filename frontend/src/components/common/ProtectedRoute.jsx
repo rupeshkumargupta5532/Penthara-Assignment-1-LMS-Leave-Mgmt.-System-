@@ -2,8 +2,16 @@ import { Navigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
 /**
- * Protects routes based on user role
+ * ProtectedRoute Component
+ *
+ * Restricts access to routes based on:
+ * - Authentication status
+ * - Allowed role
+ *
+ * @param {ReactNode} children - Protected component
+ * @param {String} allowedRole - Required user role
  */
+
 const ProtectedRoute = ({ children, allowedRole }) => {
   const { user, loading } = useAuth();
 

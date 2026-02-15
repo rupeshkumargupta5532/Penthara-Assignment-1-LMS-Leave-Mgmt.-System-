@@ -1,6 +1,16 @@
 /**
- * Loading Spinner Component
+ * Loader Component
+ *
+ * Displays a loading spinner.
+ *
+ * Used during:
+ * - API calls
+ * - Dashboard initialization
+ * - Authentication validation
+ *
+ * Provides visual feedback during asynchronous operations.
  */
+
 const Loader = () => {
   return (
     <div className="flex justify-center items-center p-6">

@@ -2,10 +2,26 @@ import { useState } from "react";
 import { loginUser } from "../../services/authService";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import InputField from "../common/InputField";
+import Button from "../common/Button";
 
 /**
- * Login form component
+ * LoginForm Component
+ *
+ * Handles user authentication.
+ *
+ * Responsibilities:
+ * - Collect email and password
+ * - Call login API
+ * - Store authenticated user in global context
+ * - Redirect user based on role (admin / employee)
+ *
+ * Uses:
+ * - AuthContext for managing user session
+ * - React Router for navigation
+ * - Reusable InputField and Button components
  */
+
 const LoginForm = () => {
   const navigate = useNavigate();
   const { setUser } = useAuth();
@@ -40,32 +56,26 @@ const LoginForm = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="max-w-md mx-auto p-6 bg-white shadow-lg rounded-lg"
+      className="w-full max-w-md mx-auto p-6 bg-white shadow-lg rounded-lg"
     >
       <h2 className="text-2xl font-bold mb-4">Login</h2>
-
-      <input
+      <InputField
         type="email"
         name="email"
-        placeholder="Email"
+        label="Email"
+        value={formData?.email}
         onChange={handleChange}
-        className="w-full mb-3 p-2 border rounded"
       />
 
-      <input
+      <InputField
         type="password"
         name="password"
-        placeholder="Password"
+        label="Password"
+        value={formData?.password}
         onChange={handleChange}
-        className="w-full mb-3 p-2 border rounded"
       />
 
-      <button
-        type="submit"
-        className="w-full bg-blue-600 text-white py-2 rounded"
-      >
-        Login
-      </button>
+      <Button type="submit">Login</Button>
     </form>
   );
 };

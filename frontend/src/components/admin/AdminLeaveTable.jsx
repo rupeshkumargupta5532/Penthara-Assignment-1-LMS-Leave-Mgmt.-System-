@@ -1,61 +1,57 @@
+import DataTable from "../common/DataTable";
 import { formatDate } from "../../utils/formatDate";
-
 /**
- * Displays filtered leave results for admin
+ * AdminLeaveTable Component
+ *
+ * Displays filtered leave results based on
+ * status and/or department.
+ *
+ * @param {Array} leaves - Filtered leave records
  */
+
 const AdminLeaveTable = ({ leaves }) => {
-  if (!leaves || leaves.length === 0) {
-    return (
-      <div className="bg-white p-4 shadow rounded">
-        <p className="text-gray-500 text-center">No filtered leaves found</p>
-      </div>
-    );
-  }
+  const columns = [
+    {
+      header: "Employee",
+      render: (row) => row.userData?.name,
+    },
+    {
+      header: "Department",
+      render: (row) => row.userData?.department,
+    },
+    {
+      header: "From",
+      render: (row) => formatDate(row.fromDate),
+    },
+    {
+      header: "To",
+      render: (row) => formatDate(row.toDate),
+    },
+    {
+      header: "Status",
+      render: (row) => (
+        <span
+          className={`font-semibold ${
+            row.status === "Approved"
+              ? "text-green-600"
+              : row.status === "Rejected"
+                ? "text-red-600"
+                : "text-yellow-600"
+          }`}
+        >
+          {row.status}
+        </span>
+      ),
+    },
+  ];
 
   return (
-    <div className="bg-white shadow rounded-lg p-6">
-      <h2 className="text-xl font-bold mb-4">Filtered Leave Results</h2>
-
-      <div className="overflow-x-auto">
-        <table className="w-full border border-gray-200">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="p-3 border">Employee</th>
-              <th className="p-3 border">Department</th>
-              <th className="p-3 border">From</th>
-              <th className="p-3 border">To</th>
-              <th className="p-3 border">Status</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {leaves.map((leave) => (
-              <tr key={leave._id} className="border-t hover:bg-gray-50">
-                <td className="p-3 border">{leave.userData?.name}</td>
-
-                <td className="p-3 border">{leave.userData?.department}</td>
-
-                <td className="p-3 border">{formatDate(leave.fromDate)}</td>
-
-                <td className="p-3 border">{formatDate(leave.toDate)}</td>
-
-                <td
-                  className={`p-3 border font-semibold ${
-                    leave.status === "Approved"
-                      ? "text-green-600"
-                      : leave.status === "Rejected"
-                        ? "text-red-600"
-                        : "text-yellow-600"
-                  }`}
-                >
-                  {leave.status}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <DataTable
+      title="Filtered Leave Results"
+      columns={columns}
+      data={leaves}
+      emptyMessage="No filtered leaves found"
+    />
   );
 };
 
