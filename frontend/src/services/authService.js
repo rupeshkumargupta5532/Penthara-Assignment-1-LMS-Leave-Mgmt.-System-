@@ -22,9 +22,18 @@ export const logoutUser = () => {
   return api.post("/auth/logout");
 };
 
+
 /**
  * Refresh authentication token
  */
 export const refreshToken = () => {
   return api.post("/auth/refresh");
+};
+
+
+/**
+ * Get Current User
+ */
+export const getCurrentUser = () => {
+  return api.get("/auth/me");
 };

@@ -1,45 +1,34 @@
-import { useEffect, useState } from "react";
-import { getDashboard } from "../../services/adminService";
-
 /**
- * Admin Dashboard Statistics
- * Displays leave count grouped by status
+ * LeaveBalance Component
+ * Displays employee leave summary cards
  */
-const DashboardStats = () => {
-  const [stats, setStats] = useState({});
-
-  useEffect(() => {
-    fetchStats();
-  }, []);
-
-  const fetchStats = async () => {
-    try {
-      const response = await getDashboard();
-      setStats(response?.data || {});
-    } catch (error) {
-      console.error("Error fetching dashboard stats:", error);
-    }
-  };
+const LeaveBalance = ({ summary }) => {
+  const {
+    totalLeaves = 0,
+    approved = 0,
+    pending = 0,
+    rejected = 0,
+  } = summary || {};
 
   const cards = [
     {
       title: "Total Leaves",
-      value: stats["totalLeaves"],
+      value: totalLeaves,
       color: "bg-blue-100 text-blue-700",
     },
     {
       title: "Approved",
-      value: stats["approved"],
+      value: approved,
       color: "bg-green-100 text-green-700",
     },
     {
       title: "Pending",
-      value: stats["pending"],
+      value: pending,
       color: "bg-yellow-100 text-yellow-700",
     },
     {
       title: "Rejected",
-      value: stats["rejected"],
+      value: rejected,
       color: "bg-red-100 text-red-700",
     },
   ];
@@ -59,4 +48,4 @@ const DashboardStats = () => {
   );
 };
 
-export default DashboardStats;
+export default LeaveBalance;

@@ -1,3 +1,5 @@
+import { formatDate } from "../../utils/formatDate";
+
 /**
  * Displays filtered leave results for admin
  */
@@ -33,9 +35,9 @@ const AdminLeaveTable = ({ leaves }) => {
 
                 <td className="p-3 border">{leave.userData?.department}</td>
 
-                <td className="p-3 border">{leave.fromDate}</td>
+                <td className="p-3 border">{formatDate(leave.fromDate)}</td>
 
-                <td className="p-3 border">{leave.toDate}</td>
+                <td className="p-3 border">{formatDate(leave.toDate)}</td>
 
                 <td
                   className={`p-3 border font-semibold ${

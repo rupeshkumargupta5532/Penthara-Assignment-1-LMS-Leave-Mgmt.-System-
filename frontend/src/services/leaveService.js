@@ -15,6 +15,13 @@ export const getMyLeaves = () => {
 };
 
 /**
+ * Fetch leave Stats
+ */
+export const statsUser = () => {
+  return api.get("/auth/stats");
+};
+
+/**
  * Update leave
  */
 export const updateLeave = (leaveId, data) => {

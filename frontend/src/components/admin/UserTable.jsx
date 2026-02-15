@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getAllUsers } from "../../services/adminService";
 
 /**
- * Displays all users for admin
+ * UserTable Component
  */
 const UserTable = () => {
   const [users, setUsers] = useState([]);
@@ -12,35 +12,57 @@ const UserTable = () => {
   }, []);
 
   const fetchUsers = async () => {
-    const response = await getAllUsers();
-    setUsers(response.data.data || []);
+    try {
+      const response = await getAllUsers();
+      setUsers(response?.data?.data || []);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
   };
 
+  if (!users || users.length === 0) {
+    return (
+      <div className="bg-white p-4 shadow rounded-lg">
+        <p className="text-gray-500 text-center">No users found</p>
+      </div>
+    );
+  }
+
   return (
-    <div>
+    <div className="bg-white shadow rounded-lg p-6">
       <h2 className="text-xl font-bold mb-4">All Users</h2>
 
-      <table className="w-full border">
-        <thead className="bg-gray-200">
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Department</th>
-            <th>Emp ID</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {users?.map((user) => (
-            <tr key={user._id} className="border-t text-center">
-              <td>{user.name}</td>
-              <td>{user.email}</td>
-              <td>{user.department}</td>
-              <td>{user.empId}</td>
+      <div className="overflow-x-auto">
+        <table className="w-full border border-gray-200">
+          {/* Table Head */}
+          <thead className="bg-gray-100">
+            <tr className="text-left">
+              <th className="p-3 border">Name</th>
+              <th className="p-3 border">Email</th>
+              <th className="p-3 border">Department</th>
+              <th className="p-3 border">Employee ID</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+
+          {/* Table Body */}
+          <tbody>
+            {users.map((user) => (
+              <tr
+                key={user._id}
+                className="border-t hover:bg-gray-50 transition"
+              >
+                <td className="p-3 border font-medium">{user.name}</td>
+
+                <td className="p-3 border">{user.email}</td>
+
+                <td className="p-3 border">{user.department}</td>
+
+                <td className="p-3 border">{user.empId}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

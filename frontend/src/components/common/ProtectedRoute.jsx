@@ -5,7 +5,11 @@ import { useAuth } from "../../context/AuthContext";
  * Protects routes based on user role
  */
 const ProtectedRoute = ({ children, allowedRole }) => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return null;
+  }
 
   if (!user) {
     return <Navigate to="/login" />;

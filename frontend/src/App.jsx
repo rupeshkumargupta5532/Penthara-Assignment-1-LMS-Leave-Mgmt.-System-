@@ -30,7 +30,6 @@ function App() {
           }
         />
 
-        {/* Optional default redirect */}
         <Route path="*" element={<LoginPage />} />
       </Routes>
     </BrowserRouter>

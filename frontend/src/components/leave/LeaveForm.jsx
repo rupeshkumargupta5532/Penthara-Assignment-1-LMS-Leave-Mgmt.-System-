@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { applyLeave } from "../../services/leaveService";
+import InputField from "../common/InputField";
+import Button from "../common/Button";
+import { formatDate } from "../../utils/formatDate";
 
 /**
  * Leave Application Form
+ * Includes date validation (fromDate < toDate)
  */
 const LeaveForm = () => {
   const [formData, setFormData] = useState({
@@ -12,61 +16,107 @@ const LeaveForm = () => {
     reason: "",
   });
 
+  const [error, setError] = useState("");
+
+  /**
+   * Handle input change
+   */
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+
+    setError(""); // clear error when user edits
+  };
+
+  /**
+   * Handle form submission
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const { fromDate, toDate } = formData;
+
+    //  Date Validation
+    if (formatDate(fromDate) > formatDate(toDate)) {
+      setError("From Date must be earlier than To Date");
+      return;
+    }
+
     try {
       await applyLeave(formData);
+
       alert("Leave Applied Successfully");
+
+      setFormData({
+        leaveType: "",
+        fromDate: "",
+        toDate: "",
+        reason: "",
+      });
     } catch (error) {
-      console.error(error);
+      console.error("Error applying leave:", error);
       alert("Error applying leave");
     }
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="bg-white shadow p-6 rounded-lg"
-    >
-      <h2 className="text-xl font-bold mb-4">Apply Leave</h2>
+    <div className="bg-white shadow p-6 rounded-lg">
+      <h2 className="text-xl font-bold mb-6">Apply Leave</h2>
 
-      <input
-        type="text"
-        placeholder="Leave Type"
-        onChange={(e) =>
-          setFormData({ ...formData, leaveType: e.target.value })
-        }
-        className="w-full mb-3 p-2 border rounded"
-      />
+      <form onSubmit={handleSubmit}>
+        {/* Leave Type Dropdown */}
+        <div className="mb-4">
+          <label className="block mb-1 font-medium">Leave Type</label>
+          <select
+            name="leaveType"
+            value={formData.leaveType}
+            onChange={handleChange}
+            className="w-full border p-2 rounded focus:ring-2 focus:ring-blue-400"
+          >
+            <option value="">Select Leave Type</option>
+            <option value="Sick">Sick</option>
+            <option value="Casual">Casual</option>
+            <option value="Paid">Paid</option>
+          </select>
+        </div>
 
-      <input
-        type="date"
-        onChange={(e) =>
-          setFormData({ ...formData, fromDate: e.target.value })
-        }
-        className="w-full mb-3 p-2 border rounded"
-      />
+        <InputField
+          label="From Date"
+          type="date"
+          name="fromDate"
+          value={formData.fromDate}
+          onChange={handleChange}
+        />
 
-      <input
-        type="date"
-        onChange={(e) =>
-          setFormData({ ...formData, toDate: e.target.value })
-        }
-        className="w-full mb-3 p-2 border rounded"
-      />
+        <InputField
+          label="To Date"
+          type="date"
+          name="toDate"
+          value={formData.toDate}
+          onChange={handleChange}
+        />
 
-      <textarea
-        placeholder="Reason"
-        onChange={(e) =>
-          setFormData({ ...formData, reason: e.target.value })
-        }
-        className="w-full mb-3 p-2 border rounded"
-      />
+        {/* Error Message */}
+        {error && <p className="text-red-600 mb-4 font-medium">{error}</p>}
 
-      <button className="bg-green-600 text-white px-4 py-2 rounded">
-        Submit
-      </button>
-    </form>
+        <div className="mb-4">
+          <label className="block mb-1 font-medium">Reason</label>
+          <textarea
+            name="reason"
+            value={formData.reason}
+            onChange={handleChange}
+            className="w-full border p-2 rounded focus:ring-2 focus:ring-blue-400"
+            rows="3"
+          />
+        </div>
+
+        <Button type="submit" variant="success">
+          Submit Leave
+        </Button>
+      </form>
+    </div>
   );
 };
 
