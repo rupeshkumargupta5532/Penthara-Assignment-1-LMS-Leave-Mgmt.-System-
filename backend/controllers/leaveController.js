@@ -1,5 +1,5 @@
 const Leave = require("../models/Leave");
-
+const mongoose = require("mongoose");
 exports.applyLeave = async (req, res) => {
   const leave = await Leave.create({
     ...req.body,
@@ -7,6 +7,48 @@ exports.applyLeave = async (req, res) => {
   });
 
   res.json(leave);
+};
+
+exports.leaveStats = async (req, res) => {
+  try {
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    const stats = await Leave.aggregate([
+      {
+        $match: {
+          user: new mongoose.Types.ObjectId(userId),
+        },
+      },
+      {
+        $group: {
+          _id: "$status",
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+
+    const formattedStats = {
+      approved: 0,
+      pending: 0,
+      rejected: 0,
+      totalLeaves: 0,
+    };
+
+    stats.forEach((item) => {
+      const key = item._id.toLowerCase();
+      formattedStats[key] = item.count;
+      formattedStats.totalLeaves += item.count;
+    });
+
+    res.status(200).json(formattedStats);
+  } catch (error) {
+    console.error("Leave stats error:", error);
+    res.status(500).json({ message: "Error fetching stats" });
+  }
 };
 
 exports.getMyLeaves = async (req, res) => {

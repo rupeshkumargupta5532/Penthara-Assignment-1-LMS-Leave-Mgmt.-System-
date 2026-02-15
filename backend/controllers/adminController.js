@@ -43,7 +43,20 @@ exports.dashboardStats = async (req, res) => {
     { $group: { _id: "$status", count: { $sum: 1 } } },
   ]);
 
-  res.json(stats);
+  const formattedStats = {
+    approved: 0,
+    pending: 0,
+    rejected: 0,
+    totalLeaves: 0,
+  };
+
+  stats.forEach((item) => {
+    const key = item._id.toLowerCase();
+    formattedStats[key] = item.count;
+    formattedStats.totalLeaves += item.count;
+  });
+
+  res.status(200).json(formattedStats);
 };
 
 exports.searchUsers = async (req, res) => {
