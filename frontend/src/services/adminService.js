@@ -1,7 +1,7 @@
 import api from "./api";
 
 /**
- * Creates a new admin user.
+ * Creates a new admin user. (Frontend NOT Implented )
  *
  * @param {Object} data - Admin user data
  * @returns {Promise} Axios response promise
@@ -22,7 +22,7 @@ export const getAllUsers = (page = 1, limit = 10) => {
 };
 
 /**
- * Searches users by query string.
+ * Searches users by query string. (Frontend NOT Implented )
  *
  * @param {String} query - Search keyword
  * @returns {Promise} Axios response promise

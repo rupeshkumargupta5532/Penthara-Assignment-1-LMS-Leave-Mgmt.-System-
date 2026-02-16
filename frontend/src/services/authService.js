@@ -21,7 +21,7 @@ export const loginUser = async (credentials) => {
 };
 
 /**
- * Logs out the currently authenticated user.
+ * Logs out the currently authenticated user. (Frontend NOT Implented )
  *
  * @returns {Promise} Axios response promise
  */
@@ -30,7 +30,7 @@ export const logoutUser = () => {
 };
 
 /**
- * Refreshes authentication token.
+ * Refreshes authentication token. (Frontend NOT Implented )
  *
  * @returns {Promise} Axios response promise
  */

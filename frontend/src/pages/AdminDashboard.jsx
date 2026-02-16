@@ -11,6 +11,7 @@ import {
   getAllUsers,
   getDashboard,
 } from "../services/adminService";
+import Loader from "../components/common/Loader";
 
 /**
  * AdminDashboard Component
@@ -67,7 +68,7 @@ const AdminDashboard = () => {
   };
 
   if (loading) {
-    return <div className="p-6 text-center">Loading Dashboard...</div>;
+    return <Loader />;
   }
 
   return (
